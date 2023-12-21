@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/style_home.css">
+  <link rel="stylesheet" href="/css/style_rooms.css">
+  <title>The Database Hotel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Elsie&family=Quattrocento+Sans&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark shadow-5-strong fixed-top">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="/home">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/type-of-rooms" target="_blank">Rooms</a>
+        </li>
+        <li>
+          <a class="navbar-brand" href="#">
+            <img src="/images/logo.png" alt="Your Logo" id="logo">
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/all-reports">Reports</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Contact</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="dodatna_margina row">
+    <div class="col"></div>
+    <div class="col-6">
+      <form action="/all-reports/<%= number %>/results" method="post">
+        <input type="hidden" name="number" value="<%= number %>">
+        <div class="form-group">
+          <label for="startDate">Start date</label>
+          <input type="date" class="form-control" id="startDate" name="startDate">
+        </div>
+        <div class="form-group">
+          <label for="endDate">End date</label>
+          <input type="date" class="form-control" id="endDate" name="endDate">
+        </div>
+        <% if (imaTip) { %>
+          <div class="form-group">
+            <label for="roomType">Room type</label>
+            <br>
+            <input type="number" id="roomType" min="1" max="11" name="roomType">
+          </div>
+        <% } %>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+    <div class="col"></div>
+  </div>
+
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+body {
+  background-color: rgb(0, 0, 128, 0.85) !important;
+}
+
+.dodatna_margina {
+  margin-top: 20vh;
+}
+
+label {
+  color: white;
+}
+
+.table th {
+  border-top: none !important;
+}
+
+table {
+  background-color: white;
+  border-radius: 25px;
+}

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/style_home.css">
+  <link rel="stylesheet" href="/css/style_rooms.css">
+  <title>The Database Hotel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Elsie&family=Quattrocento+Sans&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark shadow-5-strong">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="/home">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/type-of-rooms" target="_blank">Rooms</a>
+        </li>
+        <li>
+          <a class="navbar-brand" href="#">
+            <img src="/images/logo.png" alt="Your Logo" id="logo">
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/all-reports">Reports</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Contact</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="row">
+      <table class="table">
+        <thead>
+        <tr>
+          <% for (let i = 0; i < reportResults.ime_kolona.length; i++) { %>
+            <th><%= reportResults.ime_kolona[i] %></th>
+          <% } %>
+        </tr>
+        </thead>
+        <tbody>
+        <% for (let i = 0; i < reportResults.vrijednost_redova.length; i++) { %>
+          <tr>
+            <% for (let j = 0; j < reportResults.ime_kolona.length; j++) { %>
+              <td><%= reportResults.vrijednost_redova[i][j] %></td>
+            <% } %>
+          </tr>
+        <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+</body>
+</html>
