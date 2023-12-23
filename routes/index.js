@@ -125,4 +125,21 @@ async function executeProcedure(procedureName, params) {
   });
 }
 
+router.post('/cjenovnik', function(req, res, next) {
+  const cjenovnik = req.body;
+
+  pool.execute(
+        'INSERT INTO p_cjenovnici (id_zc, cijena, id_vs, id_vn) VALUES (?, ?, ?, ?)',
+        [cjenovnik.id_zc, cjenovnik.cijena, cjenovnik.id_vs, cjenovnik.id_vn],
+        (err, results) => {
+          if (err) {
+            console.error(err);
+            res.status(500).send('Greska prilikom upisa u bazu podataka');
+          } else {
+            res.status(201).send('Cjenovnik uspješno spremljen u bazu');
+          }
+        }
+    );
+});
+
 module.exports = router;
