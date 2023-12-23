@@ -125,21 +125,28 @@ async function executeProcedure(procedureName, params) {
   });
 }
 
-router.post('/cjenovnik', function(req, res, next) {
-  const cjenovnik = req.body;
 
-  pool.execute(
-        'INSERT INTO p_cjenovnici (id_zc, cijena, id_vs, id_vn) VALUES (?, ?, ?, ?)',
-        [cjenovnik.id_zc, cjenovnik.cijena, cjenovnik.id_vs, cjenovnik.id_vn],
-        (err, results) => {
-          if (err) {
-            console.error(err);
-            res.status(500).send('Greska prilikom upisa u bazu podataka');
-          } else {
-            res.status(201).send('Cjenovnik uspješno spremljen u bazu');
-          }
-        }
-    );
+router.post('/cjenovnik', async function(req, res, next) {
+  const informacije = req.body;
+  let konekcija = null;
+  try {
+    konekcija = await poool.getConnection();
+    await konekcija.beginTransaction();
+    const [zaglavlje_rezultat]  = await conn.query('INSERT INTO p_zaglavlje_cjenovnika (datum_pocetka_vazenja, datum_odredjenja, dodatne_informacije, status_cjenovnika) VALUES (?, ?, ?, ?)',
+        [informacije.datum_pocetka_vazenja, informacije.datum_odredjenja, informacije.dodatne_informacije, informacije.status_cjenovnika]);
+    const id_zc = zaglavlje_rezultat.insertId;
+    await konekcija.query('INSERT INTO p_cjenovnici (id_zc, cijena, id_vs, id_vn) VALUES (?, ?, ?, ?)',
+        [id_zc, informacije.cijena, informacije.id_vs, informacije.id_vn]);
+    await konekcija.commit();
+    res.status(200).send('Transakcija uspjesna!');
+  } catch (error) {
+    if (konekcija) await konekcija.rollback();
+    console.error(error);
+    res.status(500).send('Transakcija neuspjesna!');
+    throw error;
+  } finally {
+    if (konekcija) await konekcija.release();
+  }
 });
 
 module.exports = router;
