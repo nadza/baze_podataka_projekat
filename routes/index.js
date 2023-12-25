@@ -125,18 +125,22 @@ async function executeProcedure(procedureName, params) {
   });
 }
 
-
 router.post('/cjenovnik', async function(req, res, next) {
   const informacije = req.body;
   let konekcija = null;
   try {
     konekcija = await poool.getConnection();
     await konekcija.beginTransaction();
-    const [zaglavlje_rezultat]  = await conn.query('INSERT INTO p_zaglavlje_cjenovnika (datum_pocetka_vazenja, datum_odredjenja, dodatne_informacije, status_cjenovnika) VALUES (?, ?, ?, ?)',
+    
+    const [zaglavlje_rezultat]  = await konekcija.query('INSERT INTO p_zaglavlje_cjenovnika (datum_pocetka_vazenja, datum_odredjenja, dodatne_informacije, status_cjenovnika) VALUES (?, ?, ?, ?)',
         [informacije.datum_pocetka_vazenja, informacije.datum_odredjenja, informacije.dodatne_informacije, informacije.status_cjenovnika]);
     const id_zc = zaglavlje_rezultat.insertId;
-    await konekcija.query('INSERT INTO p_cjenovnici (id_zc, cijena, id_vs, id_vn) VALUES (?, ?, ?, ?)',
-        [id_zc, informacije.cijena, informacije.id_vs, informacije.id_vn]);
+    
+    for (const stavka of informacije.stavke) {
+      await konekcija.query('INSERT INTO p_cjenovnici (id_zc, cijena, id_vs, id_vn) VALUES (?, ?, ?, ?)',
+          [id_zc, stavka.cijena, stavka.id_vs, stavka.id_vn]);
+    }
+
     await konekcija.commit();
     res.status(200).send('Transakcija uspjesna!');
   } catch (error) {
